@@ -1,10 +1,15 @@
-import { createBrowserRouter } from "react-router";
+import type { ComponentType } from "react";
 import LocationPage from "./pages/LocationPage";
 import ServicePage from "./pages/ServicePage";
 import SummaryPage from "./pages/SummaryPage";
 import DashboardPage from "./pages/DashboardPage";
 
-export const router = createBrowserRouter([
+export type AppRoute = {
+  path: string;
+  Component: ComponentType;
+};
+
+export const routes: AppRoute[] = [
   {
     path: "/",
     Component: LocationPage,
@@ -21,4 +26,4 @@ export const router = createBrowserRouter([
     path: "/dashboard",
     Component: DashboardPage,
   },
-]);
+];
