@@ -1,7 +1,7 @@
 
-  # Desktop view for PrzyParafii
+  # PrzyParafii
 
-  This is a code bundle for Desktop view for PrzyParafii. The original project is available at https://www.figma.com/design/xQ6BNZhlXpHdDkFib47mfB/Desktop-view-for-PrzyParafii.
+  Nie twoje to nie ruszaj :)
 
   ## Running the code
 

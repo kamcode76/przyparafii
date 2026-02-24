@@ -1,70 +1,98 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { ProgressStepper } from "../components/ProgressStepper";
-
-type OrderData = {
-  city: string;
-  cemetery: string;
-  deceasedName: string;
-  unknownLocation: boolean;
-  service: "basic" | "annual" | null;
-  addons: Array<"candle" | "flowers">;
-};
+import { useOrderStore } from "../store/useOrderStore";
 
 export default function SummaryPage() {
   const navigate = useNavigate();
-  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const { locationData, serviceData } = useOrderStore();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
-  useEffect(() => {
-    const data = sessionStorage.getItem("orderData");
-    if (data) {
-      setOrderData(JSON.parse(data));
-    }
-  }, []);
+  const packageLabel = useMemo(() => {
+    if (serviceData.selectedPackage === "basic") return "Pakiet Podstawowy";
+    if (serviceData.selectedPackage === "annual") return "Pakiet Całoroczny";
+    return "";
+  }, [serviceData.selectedPackage]);
+
+  const addonsLabel = useMemo(() => {
+    const addons = serviceData.addons || [];
+    const labels: string[] = [];
+    if (addons.includes("candle")) labels.push("Znicz");
+    if (addons.includes("flowers")) labels.push("Kwiaty");
+    return labels;
+  }, [serviceData.addons]);
+
+  const serviceLabel = useMemo(() => {
+    const base = packageLabel || "—";
+    if (addonsLabel.length === 0) return base;
+    return `${base} + ${addonsLabel.join(" + ")}`;
+  }, [addonsLabel, packageLabel]);
+
+  const cityLabel = useMemo(() => {
+    if (locationData.unknownLocation) return "Nieznane — ustalimy lokalizację";
+    return locationData.city || "—";
+  }, [locationData.city, locationData.unknownLocation]);
+
+  const totalPrice = useMemo(() => {
+    if (serviceData.totalPrice > 0) return serviceData.totalPrice;
+
+    let total = 0;
+    if (serviceData.selectedPackage === "basic") total += 150;
+    if (serviceData.selectedPackage === "annual") total += 500;
+    if (serviceData.addons.includes("candle")) total += 25;
+    if (serviceData.addons.includes("flowers")) total += 80;
+    return total;
+  }, [serviceData.addons, serviceData.selectedPackage, serviceData.totalPrice]);
 
   const handleBack = () => {
     navigate("/service");
   };
 
   const handleSubmit = () => {
-    // Simulate payment and order submission
-    alert("Płatność przebiegła pomyślnie! Przekierowanie do panelu klienta...");
-    navigate("/dashboard");
-  };
+    if (isProcessing) return;
 
-  const calculateTotal = () => {
-    let total = 0;
-    if (orderData?.service === "basic") total += 150;
-    if (orderData?.service === "annual") total += 500;
-    if (orderData?.addons.includes("candle")) total += 25;
-    if (orderData?.addons.includes("flowers")) total += 80;
-    return total;
-  };
+    setIsProcessing(true);
 
-  const getServiceName = () => {
-    if (orderData?.service === "basic") return "Jednorazowe uporządkowanie";
-    if (orderData?.service === "annual") return "Pakiet Całoroczny";
-    return "";
-  };
+    window.setTimeout(() => {
+      setIsProcessing(false);
+      setShowSuccessToast(true);
 
-  const getAddonsText = () => {
-    if (!orderData?.addons.length) return "";
-    const addons = [];
-    if (orderData.addons.includes("candle")) addons.push("Znicz");
-    if (orderData.addons.includes("flowers")) addons.push("Wiązanka");
-    return addons.length > 0 ? " + " + addons.join(" + ") : "";
-  };
+      window.setTimeout(() => {
+        setShowSuccessToast(false);
+      }, 2500);
 
-  if (!orderData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#F9F9F8" }}>
-        <p style={{ fontFamily: "'Inter', sans-serif", color: "#4A5568" }}>Ładowanie...</p>
-      </div>
-    );
-  }
+      navigate("/dashboard");
+    }, 2000);
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#F9F9F8" }}>
+      {showSuccessToast && (
+        <div className="fixed top-6 right-6 z-50">
+          <div
+            className="flex items-center gap-3 px-5 py-3 rounded-lg border shadow-lg"
+            style={{
+              backgroundColor: "#F0FDF4",
+              borderColor: "#BBF7D0",
+            }}
+          >
+            <CheckCircle2 className="w-5 h-5" style={{ color: "#16A34A" }} />
+            <span
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.9375rem",
+                fontWeight: "600",
+                color: "#166534",
+              }}
+            >
+              Płatność zakończona sukcesem. Przekierowujemy do panelu…
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="pt-12">
         <ProgressStepper currentStep={3} />
       </div>
@@ -99,7 +127,7 @@ export default function SummaryPage() {
                   marginBottom: "0.5rem"
                 }}
               >
-                Lokalizacja
+                Miasto
               </p>
               <p 
                 style={{ 
@@ -109,7 +137,7 @@ export default function SummaryPage() {
                   color: "#1A1F2B"
                 }}
               >
-                {orderData.cemetery}, {orderData.city}
+                {cityLabel}
               </p>
             </div>
 
@@ -123,7 +151,7 @@ export default function SummaryPage() {
                   marginBottom: "0.5rem"
                 }}
               >
-                Zmarły
+                Usługi
               </p>
               <p 
                 style={{ 
@@ -133,7 +161,7 @@ export default function SummaryPage() {
                   color: "#1A1F2B"
                 }}
               >
-                {orderData.deceasedName}
+                {serviceLabel}
               </p>
             </div>
 
@@ -147,7 +175,7 @@ export default function SummaryPage() {
                   marginBottom: "0.5rem"
                 }}
               >
-                Usługa
+                Cena całkowita
               </p>
               <p 
                 style={{ 
@@ -157,7 +185,7 @@ export default function SummaryPage() {
                   color: "#1A1F2B"
                 }}
               >
-                {getServiceName()}{getAddonsText()}
+                {totalPrice} zł
               </p>
             </div>
           </div>
@@ -191,7 +219,7 @@ export default function SummaryPage() {
                 color: "#1A1F2B"
               }}
             >
-              {calculateTotal()} PLN
+              {totalPrice} PLN
             </p>
           </div>
 
@@ -201,19 +229,29 @@ export default function SummaryPage() {
               onClick={handleSubmit}
               className="w-full py-4 rounded-lg"
               style={{
-                backgroundColor: "#C9A961",
+                backgroundColor: isProcessing ? "#B89851" : "#C9A961",
                 color: "#FFFFFF",
                 fontFamily: "'Inter', sans-serif",
                 fontSize: "1.125rem",
                 fontWeight: "600",
                 border: "none",
-                cursor: "pointer",
+                cursor: isProcessing ? "not-allowed" : "pointer",
                 minHeight: "56px"
               }}
-              onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#B89851"}
-              onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#C9A961"}
+              disabled={isProcessing}
+              onMouseOver={(e) => {
+                if (isProcessing) return;
+                e.currentTarget.style.backgroundColor = "#B89851";
+              }}
+              onMouseOut={(e) => {
+                if (isProcessing) return;
+                e.currentTarget.style.backgroundColor = "#C9A961";
+              }}
             >
-              Opłać i Zleć Usługę
+              <span className="inline-flex items-center justify-center gap-3">
+                {isProcessing && <Loader2 className="w-5 h-5 animate-spin" />}
+                {isProcessing ? "Przetwarzanie płatności..." : "Opłać i Zleć Usługę"}
+              </span>
             </button>
 
             <button

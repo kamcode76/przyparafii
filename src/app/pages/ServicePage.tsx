@@ -1,32 +1,62 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { Check } from "lucide-react";
 import { ProgressStepper } from "../components/ProgressStepper";
+import { useOrderStore } from "../store/useOrderStore";
 
-type ServiceType = "basic" | "annual" | null;
+type ServiceType = "basic" | "annual";
 type AddonType = "candle" | "flowers";
 
 export default function ServicePage() {
   const navigate = useNavigate();
-  const [selectedService, setSelectedService] = useState<ServiceType>("basic");
-  const [selectedAddons, setSelectedAddons] = useState<AddonType[]>(["candle"]);
+  const { serviceData, setServiceData } = useOrderStore();
+
+  const selectedService: ServiceType =
+    (serviceData.selectedPackage as ServiceType) || "basic";
+  const selectedAddons: AddonType[] = (serviceData.addons as AddonType[]) || [];
+
+  const calculateTotal = (
+    service: ServiceType | null,
+    addons: AddonType[],
+  ): number => {
+    let total = 0;
+    if (service === "basic") total += 150;
+    if (service === "annual") total += 500;
+    if (addons.includes("candle")) total += 25;
+    if (addons.includes("flowers")) total += 80;
+    return total;
+  };
+
+  const totalPrice = calculateTotal(selectedService, selectedAddons);
 
   const toggleAddon = (addon: AddonType) => {
-    setSelectedAddons(prev => 
-      prev.includes(addon) 
-        ? prev.filter(a => a !== addon)
-        : [...prev, addon]
-    );
+    const nextAddons = selectedAddons.includes(addon)
+      ? selectedAddons.filter((a) => a !== addon)
+      : [...selectedAddons, addon];
+
+    setServiceData({
+      addons: nextAddons,
+      totalPrice: calculateTotal(selectedService, nextAddons),
+    });
   };
 
   const handleNext = () => {
     // Save service data
     const existingData = JSON.parse(sessionStorage.getItem("orderData") || "{}");
-    sessionStorage.setItem("orderData", JSON.stringify({
-      ...existingData,
-      service: selectedService,
-      addons: selectedAddons
-    }));
+    sessionStorage.setItem(
+      "orderData",
+      JSON.stringify({
+        ...existingData,
+        service: selectedService,
+        addons: selectedAddons,
+      }),
+    );
+
+    setServiceData({
+      selectedPackage: selectedService,
+      addons: selectedAddons,
+      totalPrice,
+    });
+
     navigate("/summary");
   };
 
@@ -62,7 +92,12 @@ export default function ServicePage() {
           <div className="space-y-4 mb-8">
             {/* Karta aktywna - Basic */}
             <button
-              onClick={() => setSelectedService("basic")}
+              onClick={() =>
+                setServiceData({
+                  selectedPackage: "basic",
+                  totalPrice: calculateTotal("basic", selectedAddons),
+                })
+              }
               className="w-full p-6 rounded-lg relative text-left"
               style={{
                 border: selectedService === "basic" ? "2px solid #C9A961" : "1px solid #E2DED5",
@@ -115,7 +150,12 @@ export default function ServicePage() {
 
             {/* Karta nieaktywna - Annual */}
             <button
-              onClick={() => setSelectedService("annual")}
+              onClick={() =>
+                setServiceData({
+                  selectedPackage: "annual",
+                  totalPrice: calculateTotal("annual", selectedAddons),
+                })
+              }
               className="w-full p-6 rounded-lg relative text-left"
               style={{
                 border: selectedService === "annual" ? "2px solid #C9A961" : "1px solid #E2DED5",
@@ -301,7 +341,7 @@ export default function ServicePage() {
               onMouseOver={(e) => e.currentTarget.style.backgroundColor = "#B89851"}
               onMouseOut={(e) => e.currentTarget.style.backgroundColor = "#C9A961"}
             >
-              Dalej: Podsumowanie
+              Dalej - Kwota: {totalPrice} zł
             </button>
           </div>
         </div>
