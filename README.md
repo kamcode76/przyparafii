@@ -1,7 +1,7 @@
 
-  # PrzyParafii
+  # ConceptArtPrzyParafii
 
-  Nie twoje to nie ruszaj :)
+  This is a code bundle for ConceptArtPrzyParafii. The original project is available at https://www.figma.com/design/xQ6BNZhlXpHdDkFib47mfB/ConceptArtPrzyParafii.
 
   ## Running the code
 

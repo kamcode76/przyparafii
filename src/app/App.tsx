@@ -1,43 +1,43 @@
-import React from "react";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { routes } from "./routes";
-import { HeroSection } from "./components/HeroSection";
-import DashboardPage from "./pages/DashboardPage";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import LandingPage from "./pages/LandingPage";
+import OrderPage from "./pages/client/OrderPage";
+import MyOrdersPage from "./pages/client/MyOrdersPage";
+import OrderDetailPage from "./pages/client/OrderDetailPage";
+import ExecutorDashboardPage from "./pages/executor/ExecutorDashboardPage";
+import ExecutorOrderDetailPage from "./pages/executor/ExecutorOrderDetailPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
-function WizardLayout() {
-  return (
-    <div className="min-h-screen" style={{ backgroundColor: "#F9F9F8" }}>
-      <div className="mx-auto min-h-screen max-w-7xl lg:grid lg:grid-cols-2">
-        {/* Lewy panel - Hero, widoczny od lg w górę */}
-        <div className="hidden lg:flex">
-          <HeroSection />
-        </div>
-
-        {/* Prawy panel - zmieniane podstrony kreatora */}
-        <div className="flex flex-1 min-w-0">
-          <Outlet />
-        </div>
-      </div>
-    </div>
-  );
-}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: LandingPage,
+  },
+  {
+    path: "/zamow",
+    Component: OrderPage,
+  },
+  {
+    path: "/moje-zlecenia",
+    Component: MyOrdersPage,
+  },
+  {
+    path: "/zlecenie/:id",
+    Component: OrderDetailPage,
+  },
+  {
+    path: "/panel-wykonawcy",
+    Component: ExecutorDashboardPage,
+  },
+  {
+    path: "/panel-wykonawcy/zlecenie/:id",
+    Component: ExecutorOrderDetailPage,
+  },
+  {
+    path: "*",
+    Component: NotFoundPage,
+  },
+]);
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Layout kreatora z Hero po lewej */}
-        <Route element={<WizardLayout />}>
-          {routes
-            .filter((route) => route.path !== "/dashboard")
-            .map(({ path, Component }) => (
-              <Route key={path} path={path} element={<Component />} />
-            ))}
-        </Route>
-
-        {/* Osobny layout dla panelu klienta */}
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
