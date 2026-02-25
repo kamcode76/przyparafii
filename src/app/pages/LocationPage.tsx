@@ -47,7 +47,7 @@ export default function LocationPage() {
 
       <div className="max-w-xl mx-auto px-6 pb-12">
         <div
-          className="bg-white rounded-xl p-6 sm:p-8 lg:p-10"
+          className="bg-white rounded-xl p-6 sm:p-8 lg:p-12"
           style={{
             boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.08)",
           }}

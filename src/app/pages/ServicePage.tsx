@@ -72,8 +72,8 @@ export default function ServicePage() {
 
       {/* Centralny ekran */}
       <div className="max-w-3xl mx-auto px-6 pb-12">
-        <div 
-          className="bg-white rounded-xl p-6 sm:p-8 lg:p-10"
+        <div
+          className="bg-white rounded-xl p-6 sm:p-8 lg:p-12"
           style={{ boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.08)" }}
         >
           <h2 
@@ -125,13 +125,12 @@ export default function ServicePage() {
               >
                 Jednorazowe uporządkowanie
               </h3>
-              <p 
-                style={{ 
+              <p
+                className="text-gray-600 leading-relaxed"
+                style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.9375rem",
-                  color: "#4A5568",
                   marginBottom: "1rem",
-                  lineHeight: "1.5"
                 }}
               >
                 Umycie pomnika, usunięcie starych zniczy, uporządkowanie miejsca pochówku
@@ -183,13 +182,12 @@ export default function ServicePage() {
               >
                 Pakiet Całoroczny
               </h3>
-              <p 
-                style={{ 
+              <p
+                className="text-gray-600 leading-relaxed"
+                style={{
                   fontFamily: "'Inter', sans-serif",
                   fontSize: "0.9375rem",
-                  color: "#4A5568",
                   marginBottom: "1rem",
-                  lineHeight: "1.5"
                 }}
               >
                 4 wizyty w roku - regularna opieka na każdą porę roku

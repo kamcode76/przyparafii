@@ -99,8 +99,8 @@ export default function SummaryPage() {
 
       {/* Centralny ekran */}
       <div className="max-w-2xl mx-auto px-6 pb-12">
-        <div 
-          className="bg-white rounded-xl p-6 sm:p-8 lg:p-10"
+        <div
+          className="bg-white rounded-xl p-6 sm:p-8 lg:p-12"
           style={{ boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.08)" }}
         >
           <h2 
@@ -191,36 +191,38 @@ export default function SummaryPage() {
           </div>
 
           {/* Separator */}
-          <div 
+          <div
             className="my-8"
             style={{
               height: "1px",
-              backgroundColor: "#E2DED5"
+              backgroundColor: "#E2DED5",
             }}
           />
 
           {/* Kwota */}
-          <div className="flex items-baseline justify-between mb-10">
-            <p 
-              style={{ 
-                fontFamily: "'Inter', sans-serif",
-                fontSize: "1.125rem",
-                fontWeight: "600",
-                color: "#1A1F2B"
-              }}
-            >
-              Do zapłaty
-            </p>
-            <p 
-              style={{ 
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "2.5rem",
-                fontWeight: "700",
-                color: "#1A1F2B"
-              }}
-            >
-              {totalPrice} PLN
-            </p>
+          <div className="bg-gray-50 border border-[#C9A961]/30 rounded-xl p-4 sm:p-5 mb-10">
+            <div className="flex items-baseline justify-between">
+              <p
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: "1.125rem",
+                  fontWeight: "600",
+                  color: "#1A1F2B",
+                }}
+              >
+                Do zapłaty
+              </p>
+              <p
+                style={{
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "2.5rem",
+                  fontWeight: "700",
+                  color: "#1A1F2B",
+                }}
+              >
+                {totalPrice} PLN
+              </p>
+            </div>
           </div>
 
           {/* Przyciski */}

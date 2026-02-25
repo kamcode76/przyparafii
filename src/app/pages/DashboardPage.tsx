@@ -117,7 +117,7 @@ export default function DashboardPage() {
         <div className="flex-1 p-4 pt-6 pb-24 md:p-8 md:pb-8 overflow-auto">
           <div className="max-w-5xl mx-auto">
             {/* Nagłówek zlecenia */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
               <h2
                 style={{
                   fontFamily: "'Playfair Display', serif",
@@ -142,6 +142,18 @@ export default function DashboardPage() {
                 Zlecone
               </div>
             </div>
+            <p
+              className="mb-8"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.9375rem",
+                lineHeight: "1.6",
+                color: "#4A5568",
+              }}
+            >
+              Zlecenie #1042 zrealizowane. Poniżej znajduje się raport z wykonanej
+              usługi.
+            </p>
 
             {/* Order details card */}
             <div
@@ -318,27 +330,13 @@ export default function DashboardPage() {
               </h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <p
-                    className="mb-3"
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: "0.9375rem",
-                      fontWeight: "600",
-                      color: "#4A5568",
-                    }}
-                  >
-                    Przed
-                  </p>
                   <ImageWithFallback
                     src="https://images.unsplash.com/photo-1758383965361-ee39f78b9d38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjZW1ldGVyeSUyMGdyYXZlJTIwZmxvd2VycyUyMHBlYWNlZnVsfGVufDF8fHx8MTc3MTk1NzY5OHww&ixlib=rb-4.1.0&q=80&w=1080"
                     alt="Przed uporządkowaniem"
-                    className="w-full h-80 object-cover rounded-lg"
-                    style={{ boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)" }}
+                    className="w-full h-80 object-cover rounded-xl shadow-md"
                   />
-                </div>
-                <div>
                   <p
-                    className="mb-3"
+                    className="mt-3"
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: "0.9375rem",
@@ -346,16 +344,40 @@ export default function DashboardPage() {
                       color: "#4A5568",
                     }}
                   >
-                    Po
+                    Stan przed realizacją
                   </p>
+                </div>
+                <div>
                   <ImageWithFallback
                     src="https://images.unsplash.com/photo-1630642096166-27ed5b8ea5b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjbGVhbiUyMG1lbW9yaWFsJTIwc3RvbmUlMjBtb251bWVudHxlbnwxfHx8fDE3NzE5NTc2OTh8MA&ixlib=rb-4.1.0&q=80&w=1080"
                     alt="Po uporządkowaniu"
-                    className="w-full h-80 object-cover rounded-lg"
-                    style={{ boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)" }}
+                    className="w-full h-80 object-cover rounded-xl shadow-md"
                   />
+                  <p
+                    className="mt-3"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: "0.9375rem",
+                      fontWeight: "600",
+                      color: "#4A5568",
+                    }}
+                  >
+                    Stan po realizacji
+                  </p>
                 </div>
               </div>
+            </div>
+
+            {/* CTA raport PDF */}
+            <div className="flex justify-center mt-10 mb-4">
+              <button
+                className="px-8 py-3 border border-[#C9A961] text-[#C9A961] bg-transparent rounded-full font-semibold text-sm md:text-base hover:bg-[#FFFBF5] transition"
+                style={{
+                  fontFamily: "'Inter', sans-serif",
+                }}
+              >
+                Pobierz raport PDF
+              </button>
             </div>
           </div>
         </div>
