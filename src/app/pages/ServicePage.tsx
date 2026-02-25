@@ -66,14 +66,14 @@ export default function ServicePage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#F9F9F8" }}>
-      <div className="pt-12">
+      <div className="pt-8 sm:pt-12">
         <ProgressStepper currentStep={2} />
       </div>
 
       {/* Centralny ekran */}
       <div className="max-w-3xl mx-auto px-6 pb-12">
         <div 
-          className="bg-white rounded-xl p-10"
+          className="bg-white rounded-xl p-6 sm:p-8 lg:p-10"
           style={{ boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.08)" }}
         >
           <h2 

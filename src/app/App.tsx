@@ -14,7 +14,7 @@ function WizardLayout() {
         </div>
 
         {/* Prawy panel - zmieniane podstrony kreatora */}
-        <div className="flex flex-1">
+        <div className="flex flex-1 min-w-0">
           <Outlet />
         </div>
       </div>

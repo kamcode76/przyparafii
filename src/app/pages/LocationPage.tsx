@@ -41,13 +41,13 @@ export default function LocationPage() {
 
   return (
     <div className="w-full" style={{ backgroundColor: "#F9F9F8" }}>
-      <div className="pt-12">
+      <div className="pt-8 sm:pt-12">
         <ProgressStepper currentStep={1} />
       </div>
 
       <div className="max-w-xl mx-auto px-6 pb-12">
         <div
-          className="bg-white rounded-xl p-10"
+          className="bg-white rounded-xl p-6 sm:p-8 lg:p-10"
           style={{
             boxShadow: "0px 10px 40px rgba(0, 0, 0, 0.08)",
           }}
